@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+	<configuration>
+		<stop-on-errors>true</stop-on-errors>
+		<wildcard>true</wildcard>
+	</configuration>
+
+	<mapping>
+		<class-a>es.nortegas.demo.persistence.entity.UserEntity</class-a>
+		<class-b>es.nortegas.demo.service.dto.UserDTO</class-b>
+		<field custom-converter="es.nortegas.demo.util.LocalDateTimeConverter">
+			<a>dtEntry</a>
+			<b>dtEntry</b>
+		</field>
+		<field custom-converter="es.nortegas.demo.util.LocalDateTimeConverter">
+			<a>dtModified</a>
+			<b>dtModified</b>
+		</field>
+		<field custom-converter="es.nortegas.demo.util.LocalDateTimeConverter">
+			<a>dtCancel</a>
+			<b>dtCancel</b>
+		</field>
+	</mapping>
+</mappings>  

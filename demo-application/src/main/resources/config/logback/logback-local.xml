@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- por defecto se escanea cada minuto -->
+<configuration scan="true" scanPeriod="30 seconds" >
+    <!-- A standard RollingFileAppender, the log file is based on 'logFileName' 
+        at runtime -->
+    <appender name="FILE"
+        class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/demo-app.log</file>
+
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>
+                %d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{35} - %msg%n
+            </Pattern>
+                <!-- %d{yyyy-MM-dd HH:mm:ss} %mdc [%thread] %level %logger{35} - %msg%n -->
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/demo-app-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>40</maxHistory>
+        </rollingPolicy>
+
+    </appender>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{35} - %msg%n
+            </Pattern>
+        </layout>
+    </appender>
+
+    <root level="DEBUG">
+        <appender-ref ref="FILE" />
+        <appender-ref ref="CONSOLE" />
+    </root>
+
+</configuration>

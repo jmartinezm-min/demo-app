@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- por defecto se escanea cada minuto -->
+<configuration scan="true" scanPeriod="30 seconds" >
+	
+	<include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+	​
+	<springProperty scope="context" name="springAppName" source="spring.application.name"/>
+	
+	<property name="LOG_FILE" value="${LOG_PATH}/${springAppName}.log"/>
+	
+    <!-- A standard RollingFileAppender, the log file is based on 'logFileName' 
+        at runtime -->
+    <appender name="FILE"
+        class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE}-DEV.log</file>
+		
+		<filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+			<evaluator class="ch.qos.logback.classic.boolex.GEventEvaluator">
+				<expression>
+					WARN.toInt() >= e.level.toInt()
+				</expression>
+			</evaluator>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+        
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>
+                %d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{35} - %msg%n
+            </Pattern>
+                <!-- %d{yyyy-MM-dd HH:mm:ss} %mdc [%thread] %level %logger{35} - %msg%n -->
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/-DEV-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>40</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+	 <appender name="FILE_ERROR"
+        class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE}-DEV.log</file>
+		
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>
+                %d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{35} - %msg%n
+            </Pattern>
+                <!-- %d{yyyy-MM-dd HH:mm:ss} %mdc [%thread] %level %logger{35} - %msg%n -->
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/demo-app_error-DEV-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>40</maxHistory>
+        </rollingPolicy>
+    </appender>
+    
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{35} - %msg%n
+            </Pattern>
+        </layout>
+    </appender>   
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE_ERROR" />
+    </root>
+
+</configuration>
